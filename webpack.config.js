@@ -1,4 +1,6 @@
 const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 // const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
 //   .BundleAnalyzerPlugin;
 
@@ -14,6 +16,7 @@ module.exports = {
     filename: "bundle_[name].js",
   },
   // plugins: [new BundleAnalyzerPlugin()],
+  plugins: [new HtmlWebpackPlugin()],
   module: {
     rules: [
       {
@@ -28,7 +31,17 @@ module.exports = {
   resolve: {
     extensions: ["*", ".js"],
   },
+  devServer: {
+    contentBase: path.join(__dirname, "dist"),
+    compress: true,
+  },
   optimization: {
     minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        test: /\.js(\?.*)?$/i,
+        extractComments: false,
+      }),
+    ],
   },
 };
