@@ -2,13 +2,11 @@ const path = require("path");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 // const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
 //   .BundleAnalyzerPlugin;
 
 module.exports = {
-  // mode: "development",
-  mode: "production",
-
   entry: {
     index: "./src/index.js",
   },
@@ -22,10 +20,6 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: path.resolve(__dirname, "src", "main.css"),
-          to: path.resolve(__dirname, "dist", "css/main.css"),
-        },
-        {
           from: path.resolve(__dirname, "src", "GCWeb"),
           to: path.resolve(__dirname, "dist", "GCWeb"),
         },
@@ -38,8 +32,11 @@ module.exports = {
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       minify: false,
-      template: "./src/index.html",
+      template: "./src/components/index.hbs",
       filename: "index.html",
+    }),
+    new MiniCssExtractPlugin({
+      filename: "css/main.[contenthash].css",
     }),
   ],
 
@@ -52,21 +49,38 @@ module.exports = {
           loader: "babel-loader",
         },
       },
+      {
+        test: /\.css$/i,
+        exclude: /node_modules/,
+        use: [MiniCssExtractPlugin.loader, "css-loader"],
+      },
+      {
+        test: /\.css$/,
+        include: /node_modules/,
+        use: [
+          { loader: "style-loader" },
+          { loader: "css-loader", options: { url: false } },
+        ],
+      },
+      {
+        test: /\.hbs$/,
+        loader: "handlebars-loader",
+        options: {
+          precompileOptions: {
+            noEscape: true,
+            strict: true,
+            knownHelpersOnly: false,
+          },
+          runtime: path.resolve(__dirname, "src/components/helpers.js"),
+          // knownHelpersOnly: false,
+        },
+      },
     ],
   },
 
   resolve: {
     extensions: ["*", ".js"],
   },
-
-  devServer: {
-    compress: true,
-    contentBase: "./dist",
-    publicPath: "/",
-    hot: true,
-  },
-
-  devtool: false,
 
   optimization: {
     minimize: true,

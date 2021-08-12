@@ -12,6 +12,8 @@ Boilerplate configuration for a new interactive web app with IE-11 support.
 - heroku deployment
 - airbnb eslint
 - corejs3 polyfills/default browser support
+- Dynamic client side browser cache (only files with valid webpack content hash are cached for 1 year)
+- HTML5 validation for all .html files in `/dist`
 
 ## Get started
 

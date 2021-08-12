@@ -3,15 +3,19 @@
   "env": {
     "browser": true
   },
-  "globals": {
-    "Highcharts": true,
-    "L": true
-  },
   "rules": {
     "import/prefer-default-export": "off",
     "no-nested-ternary": "off",
     "max-classes-per-file": "off",
     "no-underscore-dangle": "warn",
-    "new-cap": "warn"
+    "new-cap": "warn",
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": true,
+        "optionalDependencies": false,
+        "peerDependencies": false
+      }
+    ]
   }
 }
