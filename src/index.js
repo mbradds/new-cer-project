@@ -1,3 +1,3 @@
-require("./main.css");
+import "./main.css";
 
 console.log("starting new project!");

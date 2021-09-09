@@ -9,12 +9,11 @@
     "max-classes-per-file": "off",
     "no-underscore-dangle": "warn",
     "new-cap": "warn",
-    "import/no-extraneous-dependencies": [
+    "import/extensions": [
       "error",
       {
-        "devDependencies": true,
-        "optionalDependencies": false,
-        "peerDependencies": false
+        "js": "always",
+        "json": "always"
       }
     ]
   }

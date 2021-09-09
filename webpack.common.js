@@ -1,12 +1,14 @@
-const path = require("path");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-// const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
-//   .BundleAnalyzerPlugin;
+import path from "path";
+import { fileURLToPath } from "url";
+import { CleanWebpackPlugin } from "clean-webpack-plugin";
+import CopyWebpackPlugin from "copy-webpack-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import HtmlWebpackPlugin from "html-webpack-plugin";
 
-module.exports = {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+export default {
   entry: {
     index: "./src/index.js",
   },
@@ -53,6 +55,7 @@ module.exports = {
         test: /\.css$/i,
         exclude: /node_modules/,
         use: [MiniCssExtractPlugin.loader, "css-loader"],
+        sideEffects: true,
       },
       {
         test: /\.css$/,
@@ -61,6 +64,7 @@ module.exports = {
           { loader: "style-loader" },
           { loader: "css-loader", options: { url: false } },
         ],
+        sideEffects: true,
       },
       {
         test: /\.hbs$/,
@@ -71,7 +75,7 @@ module.exports = {
             strict: true,
             knownHelpersOnly: false,
           },
-          runtime: path.resolve(__dirname, "src/components/helpers.js"),
+          runtime: path.resolve(__dirname, "src/components/helpers.cjs"),
           // knownHelpersOnly: false,
         },
       },
